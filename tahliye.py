@@ -120,112 +120,80 @@ def main():
     wn.title("Tahliye")
 
     #Kenarlık
-    kenarlik_ciz = turtle.Turtle()
-    kenarlik_ciz.speed(0)
-    kenarlik_ciz.color("Black")
-    kenarlik_ciz.penup()
-    kenarlik_ciz.setposition(-465,-360)
+    kalem = turtle.Turtle()
+    kalem.speed(0)
+    kalem.color("Black")
+    kalem.penup()
+    kalem.setposition(-465,-360)
 
-    kenarlik_ciz.pendown()
-    kenarlik_ciz.pensize(3)
+    kalem.pendown()
+    kalem.pensize(3)
 
-    kenarlik_ciz.fd(935)
-    kenarlik_ciz.lt(90)
-    kenarlik_ciz.fd(720)
-    kenarlik_ciz.lt(90)
-    kenarlik_ciz.fd(935)
-    kenarlik_ciz.lt(90)
-    kenarlik_ciz.fd(720)
-    kenarlik_ciz.hideturtle()
+    kalem.fd(935)
+    kalem.lt(90)
+    kalem.fd(720)
+    kalem.lt(90)
+    kalem.fd(935)
+    kalem.lt(90)
+    kalem.fd(720)
+    kalem.hideturtle()
 
     #grid
-    grid_ciz = turtle.Turtle()
-    grid_ciz.penup()
+    kalem.penup()
     grid_x = -463
     grid_y = 359
-    grid_ciz.setpos(grid_x,grid_y)
-    grid_ciz.speed(0)
-    grid_ciz.pendown()
+    kalem.setpos(grid_x,grid_y)
+    kalem.speed(0)
+    kalem.pensize(1)
+    kalem.pendown()
 
     while grid_x <= 469:
-        grid_ciz.goto(grid_x, -360)
-        grid_ciz.penup()
+        kalem.goto(grid_x, -360)
+        kalem.penup()
         grid_x += 15
-        grid_ciz.goto(grid_x, grid_y)
-        grid_ciz.pendown()
+        kalem.goto(grid_x, grid_y)
+        kalem.pendown()
     
     grid_x = -464
     grid_y = 359
-    grid_ciz.penup()
-    grid_ciz.setpos(grid_x,grid_y)
+    kalem.penup()
+    kalem.setpos(grid_x,grid_y)
 
     while grid_y >= -361:
-        grid_ciz.goto(466, grid_y)
-        grid_ciz.penup()
+        kalem.goto(466, grid_y)
+        kalem.penup()
         grid_y -= 15
-        grid_ciz.goto(grid_x, grid_y)
-        grid_ciz.pendown()
+        kalem.goto(grid_x, grid_y)
+        kalem.pendown()
 
-    #Koordinat bulma için hareket
-    """
-    hiz = 15
-    def sag():
-        x = personel.xcor()
-        x += hiz
-        personel.setx(x)
-
-    def sol():
-        x = personel.xcor()
-        x -= hiz
-        personel.setx(x)
-
-    def yukari():
-        y = personel.ycor()
-        y += hiz
-        personel.sety(y)
-
-    def asagi():
-        y = personel.ycor()
-        y -= hiz
-        personel.sety(y)
-
-    def bilgi():
-        messagebox.showinfo("koordinat", personel.pos())
-
-    #tus atamaları
-    
-    turtle.listen()
-    turtle.onkey(sol, "Left")
-    turtle.onkey(sag, "Right")
-
-    turtle.listen()
-    turtle.onkey(yukari, "Up")
-    turtle.onkey(asagi, "Down")
-
-    turtle.listen()
-    turtle.onkeypress(bilgi,"a")
-    """
     #Algoritma Kısmı
     maze = np.full((48,62),2)
 
     #Yol işaretleme
-    yol_isaret = turtle.Turtle()
-    yol_isaret.color("red")
-    yol_isaret.hideturtle()
+    kalem.pen(pencolor="black", fillcolor="grey", pensize=1, speed=0)
     
     def grid_click(x,y):
+
         x1 = x - x%15 + 2           #en yakın karenin x koordinatı
         y1 = y - y%15 - 1           #en yakın karenin y koordinatı
-        yol_isaret.penup()
-        yol_isaret.goto(x1, y1)
-        yol_isaret.pendown()
-        yol_isaret.goto(x1+15, y1)
-        yol_isaret.goto(x1+15, y1+15)
-        yol_isaret.goto(x1, y1+15)
-        yol_isaret.goto(x1, y1)
         matris_x = int((359-y1-15)/15)   #matriste x karşılığı
         matris_y = int((x1+463)/15)      #matriste y karşılığı
-        maze[matris_x][matris_y] = 1
+
+        if matris_x == 19 and matris_y == 21:
+            messagebox.showerror("Hata!", "Çıkışı Duvar Olarak Seçemezsiniz!")
+        elif matris_x == 26 and matris_y == 61:
+            messagebox.showerror("Hata!", "Çıkışı Duvar Olarak Seçemezsiniz!")
+        else:
+            kalem.penup()
+            kalem.goto(x1, y1)
+            kalem.pendown()
+            maze[matris_x][matris_y] = 1
+            kalem.begin_fill()
+            kalem.goto(x1+15, y1)
+            kalem.goto(x1+15, y1+15)
+            kalem.goto(x1, y1+15)
+            kalem.goto(x1, y1)
+            kalem.end_fill()
 
     turtle.onscreenclick(grid_click, 1)
 
@@ -273,7 +241,7 @@ def main():
     personel = turtle.Turtle()
     personel.color("Blue")
     personel.shape("circle")
-    personel.turtlesize(0.25)
+    personel.turtlesize(0.5)
     personel.penup()
     personel.setposition(dots[0])
 
