@@ -167,13 +167,13 @@ def main():
         kalem.pendown()
 
     #Algoritma Kısmı
-    maze = np.full((48,62),2)
+    maze = np.full((48,62),0)
 
-    #Yol işaretleme
-    kalem.pen(pencolor="black", fillcolor="grey", pensize=1, speed=0)
+    #Duvar işaretleme
     
     def grid_click(x,y):
 
+        kalem.pen(pencolor="black", fillcolor="grey", pensize=1, speed=0)
         x1 = x - x%15 + 2           #en yakın karenin x koordinatı
         y1 = y - y%15 - 1           #en yakın karenin y koordinatı
         matris_x = int((359-y1-15)/15)   #matriste x karşılığı
@@ -197,11 +197,39 @@ def main():
 
     turtle.onscreenclick(grid_click, 1)
 
+    #Koridor işaretleme
+    
+    def grid_click2(x,y):
+
+        kalem.pen(pencolor="black", fillcolor="greenyellow", pensize=1, speed=0)
+        x1 = x - x%15 + 2           #en yakın karenin x koordinatı
+        y1 = y - y%15 - 1           #en yakın karenin y koordinatı
+        matris_x = int((359-y1-15)/15)   #matriste x karşılığı
+        matris_y = int((x1+463)/15)      #matriste y karşılığı
+
+        if matris_x == 19 and matris_y == 21:
+            messagebox.showerror("Hata!", "Çıkışı Duvar Olarak Seçemezsiniz!")
+        elif matris_x == 26 and matris_y == 61:
+            messagebox.showerror("Hata!", "Çıkışı Duvar Olarak Seçemezsiniz!")
+        else:
+            kalem.penup()
+            kalem.goto(x1, y1)
+            kalem.pendown()
+            maze[matris_x][matris_y] = 2
+            kalem.begin_fill()
+            kalem.goto(x1+15, y1)
+            kalem.goto(x1+15, y1+15)
+            kalem.goto(x1, y1+15)
+            kalem.goto(x1, y1)
+            kalem.end_fill()
+
+    turtle.onscreenclick(grid_click2, 3)
+
     start = input("Başlangıç noktasını giriniz: ")
     start = tuple(int(x) for x in start.split(","))
 
-    checkpoint = [(11,2), (11, 4), (11, 10), (11, 13), (11, 18), (11, 21), (12, 25), (11, 28), (11, 32), (11, 35), (11, 40), (11, 44), (11, 49), (13, 51), (14, 51), 
-                (19, 57), (20, 48), (20, 38), (20, 33), (22, 48), (27, 48), (30, 48), (35, 48), (38, 48), (43, 48), (12, 16)]
+    checkpoint = [(12,2), (12, 4), (12, 10), (12, 13), (12, 18), (12, 21), (13, 25), (12, 28), (12, 32), (12, 35), (12, 40), (12, 44), (12, 49), (14, 51), (15, 51), 
+                (20, 57), (21, 48), (21, 38), (21, 33), (23, 48), (28, 48), (31, 48), (36, 48), (39, 48), (44, 48), (13, 16)]
 
     end1 = (19, 21)
     end2 = (26, 61)
